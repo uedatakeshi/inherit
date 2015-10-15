@@ -1,7 +1,7 @@
 /vendor/*
 /config/app.php
-#/tmp/*
-#/logs/*
+/tmp/*
+/logs/*
 
 .DS_Store
 .DS_Store?
