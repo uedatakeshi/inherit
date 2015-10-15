@@ -73,6 +73,9 @@ try {
 // You can use a file like app_local.php to provide local overrides to your
 // shared configuration.
 //Configure::load('app_local', 'default');
+if (isset($_ENV['CAKE_ENV'])) {
+    Configure::load('app_' . $_ENV['CAKE_ENV'], 'default');
+}
 
 // When debug = false the metadata cache should last
 // for a very very long time, as we don't want
@@ -184,7 +187,7 @@ Plugin::load('Migrations');
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system
-if (Configure::read('debug')) {
+if (Configure::read('debug') && !isset($_ENV['CAKE_ENV'])) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
