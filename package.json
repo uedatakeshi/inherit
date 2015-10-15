@@ -1,0 +1,40 @@
+{
+  "name": "inherit",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://api.travis-ci.org/cakephp/app.png)](https://travis-ci.org/cakephp/app) [![License](https://poser.pugx.org/cakephp/app/license.svg)](https://packagist.org/packages/cakephp/app)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uedatakeshi/inherit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uedatakeshi/inherit/issues"
+  },
+  "homepage": "https://github.com/uedatakeshi/inherit",
+  "devDependencies": {
+    "bootstrap": "^3.3.5",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.1",
+    "grunt-contrib-uglify": "^0.9.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-notify": "^0.4.1",
+    "grunt-phpcs": "^0.4.0",
+    "grunt-phpunit": "^0.3.6",
+    "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
+    "time-grunt": "^1.2.1"
+  },
+  "browser": {
+      "jquery": "./node_modules/jquery/dist/jquery.js",
+          "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
+              "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js"
+                }
+}
