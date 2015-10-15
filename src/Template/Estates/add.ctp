@@ -7,24 +7,24 @@
 <div class="estates form large-9 medium-8 columns content">
     <?= $this->Form->create($estate) ?>
     <fieldset>
-        <legend><?= __('Add Estate') ?></legend>
+        <legend><?= __('物件情報 新規登録') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('subject');
-            echo $this->Form->input('summary');
-            echo $this->Form->input('address');
-            echo $this->Form->input('access');
-            echo $this->Form->input('property_form');
-            echo $this->Form->input('structure');
-            echo $this->Form->input('build');
-            echo $this->Form->input('sale_term');
-            echo $this->Form->input('rent_term');
-            echo $this->Form->input('patients');
-            echo $this->Form->input('pharmacy');
-            echo $this->Form->input('equipment');
-            echo $this->Form->input('transaction');
-            echo $this->Form->input('terms');
-            echo $this->Form->input('contact');
+            echo $this->Form->input('name', ['label' => ['text' => '名称']]);
+            echo $this->Form->input('subject', ['label' => ['text' => '募集科目']]);
+            echo $this->Form->input('summary', ['label' => ['text' => '概要']]);
+            echo $this->Form->input('address', ['label' => ['text' => '住所']]);
+            echo $this->Form->input('access', ['label' => ['text' => '交通']]);
+            echo $this->Form->input('property_form', ['label' => ['text' => '物件形態']]);
+            echo $this->Form->input('structure', ['label' => ['text' => '建物構造']]);
+            echo $this->Form->input('build', ['label' => ['text' => '築年月']]);
+            echo $this->Form->input('sale_term', ['label' => ['text' => '売買条件']]);
+            echo $this->Form->input('rent_term', ['label' => ['text' => '賃貸条件']]);
+            echo $this->Form->input('patients', ['label' => ['text' => '患者数']]);
+            echo $this->Form->input('pharmacy', ['label' => ['text' => '薬局枠']]);
+            echo $this->Form->input('equipment', ['label' => ['text' => '付帯設備']]);
+            echo $this->Form->input('transaction', ['label' => ['text' => '取引形態']]);
+            echo $this->Form->input('terms', ['label' => ['text' => '諸条件']]);
+            echo $this->Form->input('contact', ['label' => ['text' => 'お問合わせ方法']]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

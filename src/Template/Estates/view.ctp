@@ -9,82 +9,72 @@
 </nav>
 <div class="estates view large-9 medium-8 columns content">
     <h3><?= h($estate->name) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Name') ?></th>
-            <td><?= h($estate->name) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Address') ?></th>
-            <td><?= h($estate->address) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Access') ?></th>
-            <td><?= h($estate->access) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Property Form') ?></th>
-            <td><?= h($estate->property_form) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Build') ?></th>
-            <td><?= h($estate->build) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Patients') ?></th>
-            <td><?= h($estate->patients) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Pharmacy') ?></th>
-            <td><?= h($estate->pharmacy) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Equipment') ?></th>
-            <td><?= h($estate->equipment) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Transaction') ?></th>
-            <td><?= h($estate->transaction) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($estate->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created') ?></th>
-            <td><?= h($estate->created) ?></tr>
-        </tr>
-        <tr>
-            <th><?= __('Modified') ?></th>
-            <td><?= h($estate->modified) ?></tr>
-        </tr>
-    </table>
     <div class="row">
-        <h4><?= __('Subject') ?></h4>
+        <h4><?= __('No') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->id)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('名称') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->name)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('募集科目') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->subject)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Summary') ?></h4>
+        <h4><?= __('概要') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->summary)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Structure') ?></h4>
+        <h4><?= __('住所') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->address)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('交通') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->access)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('物件形態') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->property_form)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('建物構造') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->structure)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Sale Term') ?></h4>
+        <h4><?= __('築年月') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->build)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('売買条件') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->sale_term)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Rent Term') ?></h4>
+        <h4><?= __('賃貸条件') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->rent_term)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Terms') ?></h4>
+        <h4><?= __('患者数') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->patients)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('薬局枠') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->pharmacy)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('付帯設備') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->equipment)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('取引形態') ?></h4>
+        <?= $this->Text->autoParagraph(h($estate->transaction)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('諸条件') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->terms)); ?>
     </div>
     <div class="row">
-        <h4><?= __('Contact') ?></h4>
+        <h4><?= __('お問合わせ方法') ?></h4>
         <?= $this->Text->autoParagraph(h($estate->contact)); ?>
     </div>
 </div>
