@@ -3,6 +3,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\EstatesController;
 use Cake\TestSuite\IntegrationTestCase;
+use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\EstatesController Test Case
@@ -26,7 +27,9 @@ class EstatesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/estates?page=1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -36,7 +39,9 @@ class EstatesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/estates/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -46,7 +51,16 @@ class EstatesControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $data = [
+            'name' => '新物件 新宿',
+        ];
+        $this->post('/estates/add', $data);
+
+        $this->assertResponseSuccess();
+
+        $articles = TableRegistry::get('Estates');
+        $query = $articles->find()->where(['name' => $data['name']]);
+        $this->assertEquals(1, $query->count());
     }
 
     /**
@@ -56,7 +70,9 @@ class EstatesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/estates/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -66,6 +82,8 @@ class EstatesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->post('/estates/delete/1');
+
+        $this->assertResponseSuccess();
     }
 }
