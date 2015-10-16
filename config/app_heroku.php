@@ -1,6 +1,6 @@
 <?php
 $db = parse_url(env('CLEARDB_DATABASE_URL'));
-$smtp = parse_url(env('SMTP_SERVER')); 
+$smtp = parse_url(env('SMTP_SERVER'));
 return [
     'debug' => false,
     'Security' => [

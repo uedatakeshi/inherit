@@ -2,8 +2,8 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\EstatesController;
-use Cake\TestSuite\IntegrationTestCase;
 use Cake\ORM\TableRegistry;
+use Cake\TestSuite\IntegrationTestCase;
 
 /**
  * App\Controller\EstatesController Test Case

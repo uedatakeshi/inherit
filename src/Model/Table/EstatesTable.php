@@ -29,7 +29,6 @@ class EstatesTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
-
     }
 
     /**
