@@ -52,8 +52,9 @@ class EstatesController extends AppController
             if ($this->Estates->save($estate)) {
                 $this->Flash->success(__('The estate has been saved.'));
 
-                $email = new Email('default');
-                $email->from(['uedatakeshi@gmail.com' => 'My Site'])
+                $email = new Email();
+                $email->transport('default');
+                $email->from(['develop996bn@yahoo.co.jp' => 'My Site'])
                     ->to('uedatakeshi@gmail.com')
                     ->subject('About')
                     ->send('My message');

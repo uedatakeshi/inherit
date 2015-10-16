@@ -1,5 +1,7 @@
 <?php
 $db = parse_url(env('CLEARDB_DATABASE_URL'));
+// smtp://user:password@smtp.mail.yahoo.co.jp:465
+$smtp = parse_url(env('SMTP_SERVER')); 
 return [
     'debug' => false,
     'Security' => [
@@ -18,6 +20,19 @@ return [
             //'timezone' => 'UTC',
             'cacheMetadata' => true,
             'quoteIdentifiers' => false,
+        ],
+    ],
+    'EmailTransport' => [
+        'default' => [
+            'className' => 'Smtp',
+            // The following keys are used in SMTP transports
+            'host' => 'ssl://' . $smtp['host'],
+            'port' => $smtp['port'],
+            'timeout' => 30,
+            'username' => $smtp['user'],
+            'password' => $smtp['pass'],
+            'client' => null,
+            'tls' => null,
         ],
     ],
     'Log' => [
