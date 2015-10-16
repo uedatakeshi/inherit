@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Mailer\Email;
 
 /**
  * Estates Controller
@@ -50,6 +51,14 @@ class EstatesController extends AppController
             $estate = $this->Estates->patchEntity($estate, $this->request->data);
             if ($this->Estates->save($estate)) {
                 $this->Flash->success(__('The estate has been saved.'));
+
+                $email = new Email('default');
+                $email->from(['uedatakeshi@gmail.com' => 'My Site'])
+                    ->to('uedatakeshi@gmail.com')
+                    ->subject('About')
+                    ->send('My message');
+
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The estate could not be saved. Please, try again.'));
