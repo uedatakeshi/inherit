@@ -34,7 +34,10 @@
   },
   "browser": {
       "jquery": "./node_modules/jquery/dist/jquery.js",
-          "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
-              "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js"
-                }
+      "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
+      "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js",
+      "jquery.ui.widget": "./bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js",
+      "jquery.iframe-transport": "./bower_components/blueimp-file-upload/js/jquery.iframe-transport.js",
+      "jquery.fileupload": "./bower_components/blueimp-file-upload/js/jquery.fileupload.js"
+  }
 }
