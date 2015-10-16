@@ -1,6 +1,5 @@
 <?php
 $db = parse_url(env('CLEARDB_DATABASE_URL'));
-// smtp://user:password@smtp.mail.yahoo.co.jp:465
 $smtp = parse_url(env('SMTP_SERVER')); 
 return [
     'debug' => false,
