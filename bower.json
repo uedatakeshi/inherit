@@ -1,0 +1,22 @@
+{
+  "name": "inherit",
+  "version": "0.0.0",
+  "homepage": "https://github.com/uedatakeshi/inherit",
+  "authors": [
+    "Takeshi Ueda <uedatakeshi@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "blueimp-file-upload": "jquery-file-upload#~9.11.2"
+  }
+}
