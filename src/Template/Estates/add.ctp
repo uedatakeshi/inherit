@@ -1,3 +1,10 @@
+<style type="text/css">
+.bar {
+    height: 18px;
+    background: green;
+}
+</style>
+
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -5,9 +12,16 @@
     </ul>
 </nav>
 <div class="estates form large-9 medium-8 columns content">
-    <?= $this->Form->create($estate) ?>
+    <?= $this->Form->create($estate, ['type' => 'file']) ?>
     <fieldset>
         <legend><?= __('物件情報 新規登録') ?></legend>
+
+<input id="fileupload" type="file" name="files[]" data-url="/uploads/index" multiple>
+<div id="progress">
+    <div class="bar" style="width: 0%;"></div>
+</div>
+<div id="files">
+</div>
         <?php
             echo $this->Form->input('name', ['label' => ['text' => '名称']]);
             echo $this->Form->input('subject', ['label' => ['text' => '募集科目']]);

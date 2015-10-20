@@ -16242,6 +16242,23 @@ return jQuery;
         $(this).removeData();
     });
 
+        $('#fileupload').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo('#files');
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
 })();
 
 },{"bootstrap":4,"jquery":7,"jquery-ui/datepicker":6,"jquery.fileupload":1,"jquery.iframe-transport":2,"jquery.ui.widget":3}]},{},[8]);

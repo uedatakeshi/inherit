@@ -26,7 +26,6 @@
     });
 
         $('#fileupload').fileupload({
-        url: url,
         dataType: 'json',
         done: function (e, data) {
             $.each(data.result.files, function (index, file) {
@@ -35,7 +34,7 @@
         },
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
+            $('#progress .bar').css(
                 'width',
                 progress + '%'
             );

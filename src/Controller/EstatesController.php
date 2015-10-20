@@ -11,7 +11,6 @@ use Cake\Mailer\Email;
  */
 class EstatesController extends AppController
 {
-
     /**
      * Index method
      *
