@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\EstatesController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
+use Cake\I18n\Time;
 
 /**
  * App\Controller\EstatesController Test Case
@@ -85,5 +86,45 @@ class EstatesControllerTest extends IntegrationTestCase
         $this->post('/estates/delete/1');
 
         $this->assertResponseSuccess();
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     */
+    public function testJson()
+    {
+        $this->configRequest([
+            'headers' => ['Accept' => 'application/json']
+        ]);
+        $result = $this->get('/estates/view/1.json');
+
+        $this->assertResponseOk();
+
+        $expected = [
+            'estate' =>
+            ['id' => 1,
+            'name' => '国分寺ビル',
+            'subject' => '内科',
+            'summary' => 'サマリー',
+            'address' => '東京',
+            'access' => '交通',
+            'property_form' => '',
+            'structure' => '',
+            'build' => '',
+            'sale_term' => '',
+            'rent_term' => '',
+            'patients' => '',
+            'pharmacy' => '',
+            'equipment' => '',
+            'transaction' => '',
+            'terms' => '',
+            'contact' => '',
+            'created' => new Time('2015-10-15 06:35:43'),
+            'modified' => new Time('2015-10-15 06:35:43')]
+        ];
+        $expected = json_encode($expected, JSON_PRETTY_PRINT);
+        $this->assertEquals($expected, $this->_response->body());
     }
 }
