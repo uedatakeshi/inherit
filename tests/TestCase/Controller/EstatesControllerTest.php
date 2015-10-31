@@ -127,4 +127,68 @@ class EstatesControllerTest extends IntegrationTestCase
         $expected = json_encode($expected, JSON_PRETTY_PRINT);
         $this->assertEquals($expected, $this->_response->body());
     }
+
+    public function testUpload()
+    {
+        $data = [
+            'submittedfile' => [
+                'name' => 'small.jpg',
+                'type' => 'image/jpeg',
+                'size' => 15805,
+                'tmp_name' => __DIR__ . '/_files/small.jpg',
+                'error' => 0
+            ]
+        ];
+        $this->configRequest([
+            'headers' => ['Accept' => 'application/json']
+        ]);
+        $this->post('/estates/upload.json', $data);
+
+        $this->assertResponseOk();
+
+        $expected = [
+            'data' =>
+            [
+                'name' => 'small.jpg',
+                'type' => 'image/jpeg',
+                'size' => 15805,
+                'tmp_name' => __DIR__ . '/_files/small.jpg',
+                'error' => 0
+            ]
+        ];
+        $expected = json_encode($expected, JSON_PRETTY_PRINT);
+        $this->assertEquals($expected, $this->_response->body());
+    }
+
+    public function testLargeUpload()
+    {
+        $data = [
+            'submittedfile' => [
+                'name' => '233472093_1f1d235e7b_o.jpg',
+                'type' => 'image/jpeg',
+                'size' => 5480110,
+                'tmp_name' => __DIR__ . '/_files/233472093_1f1d235e7b_o.jpg',
+                'error' => 0
+            ]
+        ];
+        $this->configRequest([
+            'headers' => ['Accept' => 'application/json']
+        ]);
+        $this->post('/estates/upload.json', $data);
+
+        $this->assertResponseOk();
+
+        $expected = [
+            'data' =>
+            [
+                'name' => '233472093_1f1d235e7b_o.jpg',
+                'type' => 'image/jpeg',
+                'size' => 5480110,
+                'tmp_name' => __DIR__ . '/_files/233472093_1f1d235e7b_o.jpg',
+                'error' => 0
+            ]
+        ];
+        $expected = json_encode($expected, JSON_PRETTY_PRINT);
+        $this->assertEquals($expected, $this->_response->body());
+    }
 }

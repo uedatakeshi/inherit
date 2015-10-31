@@ -11,6 +11,11 @@ use Cake\Mailer\Email;
  */
 class EstatesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        //$this->loadComponent('RequestHandler');
+    }
     /**
      * Index method
      *
@@ -110,5 +115,16 @@ class EstatesController extends AppController
             $this->Flash->error(__('The estate could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function upload()
+    {
+        //$this->autoRender = false;
+        $data = $this->request->data['submittedfile'];
+        //$data[0] = 1;
+        //echo json_encode($upload);
+        $this->set('data', $data);
+        $this->set('_serialize', ['data']);
+        //print_r($this->request->data['submittedfile']);
     }
 }

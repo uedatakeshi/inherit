@@ -13,6 +13,7 @@
 </nav>
 <div class="estates form large-9 medium-8 columns content">
     <?= $this->Form->create($estate, ['type' => 'file']) ?>
+<?= $this->Form->file('photo');?>
     <fieldset>
         <legend><?= __('物件情報 新規登録') ?></legend>
 
@@ -44,3 +45,9 @@
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+<?php
+// Example 1: Tracks a pageview for Website id = {$IDSITE}
+PiwikTracker::$URL = 'http://sv/piwik/2150/piwik/';
+$tracker = new PiwikTracker("1");
+echo '<img src="'. str_replace("&","&amp;", $tracker->doTrackPageView('ftv')) . '" alt="" />';
+?>
