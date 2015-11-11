@@ -12,17 +12,14 @@
     </ul>
 </nav>
 <div class="estates form large-9 medium-8 columns content">
-    <?= $this->Form->create($estate, ['type' => 'file']) ?>
-<?= $this->Form->file('photo');?>
+    <?= $this->Form->create($estate) ?>
     <fieldset>
         <legend><?= __('物件情報 新規登録') ?></legend>
 
-<input id="fileupload" type="file" name="files[]" data-url="/uploads/index" multiple>
-<div id="progress">
-    <div class="bar" style="width: 0%;"></div>
-</div>
-<div id="files">
-</div>
+        <input id="fileupload" type="file" name="files[]" data-url="/uploads/index" multiple>
+        <div id="progress"> <div class="bar" style="width: 0%;"></div> </div>
+        <div id="files"> </div>
+
         <?php
             echo $this->Form->input('name', ['label' => ['text' => '名称']]);
             echo $this->Form->input('subject', ['label' => ['text' => '募集科目']]);
@@ -45,9 +42,3 @@
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
-<?php
-// Example 1: Tracks a pageview for Website id = {$IDSITE}
-PiwikTracker::$URL = 'http://sv/piwik/2150/piwik/';
-$tracker = new PiwikTracker("1");
-echo '<img src="'. str_replace("&","&amp;", $tracker->doTrackPageView('ftv')) . '" alt="" />';
-?>

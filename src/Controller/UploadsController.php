@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\View\Exception\MissingTemplateException;
-use UploadHandler;
+use MyUploadHandler;
 
 /**
  * Uploads Controller
@@ -30,19 +30,11 @@ class UploadsController extends AppController
     public function index()
     {
         $this->autoRender = false;
-        $uploadHandler = new UploadHandler();
-    }
-
-    // 手動でアップロード実装
-    public function add()
-    {
-        $this->request->data['submittedfile'] = [
-            'name' => 'conference_schedule.pdf',
-            'type' => 'application/pdf',
-            'tmp_name' => 'C:/WINDOWS/TEMP/php1EE.tmp',
-            'error' => 0, // On Windows this can be a string.
-            'size' => 41737,
-        ];
+        $options = array(
+            'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",        
+            'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'                     
+           );
+        $uploadHandler = new MyUploadHandler($options);
     }
 
 }

@@ -4,9 +4,95 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a182ea683ea5abe31019d6927653b29a",
-    "content-hash": "68fe14b3abce5369f07de9308e286e49",
+    "hash": "7a164c2190804ef11aeddbf7959df64b",
+    "content-hash": "131292215799ac7243e23df4f3c3f6d9",
     "packages": [
+        {
+            "name": "alaxos/cakephp3-blueimp-upload",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alaxos/cakephp3-blueimp-upload.git",
+                "reference": "6f4cb8418a8f4bac1e73a83d723cdb8855d12db9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alaxos/cakephp3-blueimp-upload/zipball/6f4cb8418a8f4bac1e73a83d723cdb8855d12db9",
+                "reference": "6f4cb8418a8f4bac1e73a83d723cdb8855d12db9",
+                "shasum": ""
+            },
+            "require": {
+                "alaxos/cakephp3-libs": "~1.0",
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakephpBlueimpUpload\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "CakePHP 3 plugin allowing to easily use the blueimp jQuery-File-Upload",
+            "homepage": "https://github.com/alaxos/cakephp3-blueimp-upload",
+            "keywords": [
+                "blueimp",
+                "cakephp",
+                "jquery-file-upload",
+                "libraries",
+                "upload"
+            ],
+            "time": "2015-06-12 12:59:17"
+        },
+        {
+            "name": "alaxos/cakephp3-libs",
+            "version": "1.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alaxos/cakephp3-libs.git",
+                "reference": "201fac178aec0b1c3779cf9af21e8f482dc69d16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alaxos/cakephp3-libs/zipball/201fac178aec0b1c3779cf9af21e8f482dc69d16",
+                "reference": "201fac178aec0b1c3779cf9af21e8f482dc69d16",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "cakephp/plugin-installer": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "cakephp-plugin",
+            "extra": {
+                "installer-name": "Alaxos"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alaxos\\": "src",
+                    "Alaxos\\Test\\Fixture\\": "tests\\Fixture"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Custom libraries for CakePHP 3.x framework",
+            "homepage": "https://github.com/alaxos/cakephp3-libs",
+            "keywords": [
+                "cakephp",
+                "libraries"
+            ],
+            "time": "2015-10-29 16:27:53"
+        },
         {
             "name": "aura/installer-default",
             "version": "1.0.0",
@@ -177,17 +263,57 @@
             "time": "2015-08-31 05:28:42"
         },
         {
-            "name": "cakephp/cakephp",
-            "version": "3.1.3",
+            "name": "cakemanager/cakephp-utils",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "9d7d63cbac7a07bedfe0b549244b3ac0daa1556f"
+                "url": "https://github.com/cakemanager/cakephp-utils.git",
+                "reference": "161824d639382f9417bd856c0befac259b0e8243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/9d7d63cbac7a07bedfe0b549244b3ac0daa1556f",
-                "reference": "9d7d63cbac7a07bedfe0b549244b3ac0daa1556f",
+                "url": "https://api.github.com/repos/cakemanager/cakephp-utils/zipball/161824d639382f9417bd856c0befac259b0e8243",
+                "reference": "161824d639382f9417bd856c0befac259b0e8243",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Utils\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob Mulder",
+                    "email": "bobmulder@outlook.com"
+                }
+            ],
+            "description": "Plugin for CakePHP 3.x with useful components and behaviors",
+            "time": "2015-09-29 18:21:03"
+        },
+        {
+            "name": "cakephp/cakephp",
+            "version": "3.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/cakephp.git",
+                "reference": "46abd7761c0528ad6eee5da6dde292abbeade851"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/46abd7761c0528ad6eee5da6dde292abbeade851",
+                "reference": "46abd7761c0528ad6eee5da6dde292abbeade851",
                 "shasum": ""
             },
             "require": {
@@ -244,7 +370,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-10-25 14:53:24"
+            "time": "2015-11-06 03:48:56"
         },
         {
             "name": "cakephp/migrations",
@@ -671,12 +797,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/robmorgan/phinx.git",
-                "reference": "43313ad89c0ad1851aeefafc164e2822e49867e3"
+                "reference": "06740769d9b02365cfbed104f9a44776a3d14478"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/43313ad89c0ad1851aeefafc164e2822e49867e3",
-                "reference": "43313ad89c0ad1851aeefafc164e2822e49867e3",
+                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/06740769d9b02365cfbed104f9a44776a3d14478",
+                "reference": "06740769d9b02365cfbed104f9a44776a3d14478",
                 "shasum": ""
             },
             "require": {
@@ -725,7 +851,7 @@
                 "migrations",
                 "phinx"
             ],
-            "time": "2015-09-30 08:12:11"
+            "time": "2015-11-04 21:03:56"
         },
         {
             "name": "symfony/config",
@@ -921,21 +1047,71 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2015-10-11 09:39:48"
+        },
+        {
+            "name": "xety/cake3-upload",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Xety/Cake3-Upload.git",
+                "reference": "1958f894d622341b5fce6f76a3c0f4870ae361e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Xety/Cake3-Upload/zipball/1958f894d622341b5fce6f76a3c0f4870ae361e8",
+                "reference": "1958f894d622341b5fce6f76a3c0f4870ae361e8",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "dev-master",
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Xety\\Cake3Upload\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Xety",
+                    "email": "zoro.fmt@gmail.com",
+                    "homepage": "https://github.com/Xety"
+                }
+            ],
+            "description": "Cake3 plugin to upload files.",
+            "homepage": "https://github.com/Xety/Cake3-Upload",
+            "keywords": [
+                "cake3",
+                "cakephp",
+                "file",
+                "plugin",
+                "upload"
+            ],
+            "time": "2015-09-14 09:31:11"
         }
     ],
     "packages-dev": [
         {
             "name": "cakephp/bake",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/bake.git",
-                "reference": "749c0081ca27027b93723d4305bcb4ad18012057"
+                "reference": "a7d5ed3ef3022264db6d059784b1ad438c8744c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/bake/zipball/749c0081ca27027b93723d4305bcb4ad18012057",
-                "reference": "749c0081ca27027b93723d4305bcb4ad18012057",
+                "url": "https://api.github.com/repos/cakephp/bake/zipball/a7d5ed3ef3022264db6d059784b1ad438c8744c3",
+                "reference": "a7d5ed3ef3022264db6d059784b1ad438c8744c3",
                 "shasum": ""
             },
             "require": {
@@ -968,7 +1144,7 @@
                 "bake",
                 "cakephp"
             ],
-            "time": "2015-09-20 01:53:23"
+            "time": "2015-10-31 17:24:20"
         },
         {
             "name": "cakephp/cakephp-codesniffer",
@@ -1729,16 +1905,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.16",
+            "version": "4.8.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "625f8c345606ed0f3a141dfb88f4116f0e22978e"
+                "reference": "6cc501c1adf86482fbb54fb2958e1c7685f57a61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/625f8c345606ed0f3a141dfb88f4116f0e22978e",
-                "reference": "625f8c345606ed0f3a141dfb88f4116f0e22978e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6cc501c1adf86482fbb54fb2958e1c7685f57a61",
+                "reference": "6cc501c1adf86482fbb54fb2958e1c7685f57a61",
                 "shasum": ""
             },
             "require": {
@@ -1797,7 +1973,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-23 06:48:33"
+            "time": "2015-11-10 21:39:46"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1857,29 +2033,29 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.5.2",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "aaf8772ade08b5f0f6830774a5d5c2f800415975"
+                "reference": "cab3aa3750d451c6e8d002433af583d88fd64862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/aaf8772ade08b5f0f6830774a5d5c2f800415975",
-                "reference": "aaf8772ade08b5f0f6830774a5d5c2f800415975",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/cab3aa3750d451c6e8d002433af583d88fd64862",
+                "reference": "cab3aa3750d451c6e8d002433af583d88fd64862",
                 "shasum": ""
             },
             "require": {
                 "dnoegel/php-xdg-base-dir": "0.1",
                 "jakub-onderka/php-console-highlighter": "0.3.*",
-                "nikic/php-parser": "^1.2.1",
+                "nikic/php-parser": "^1.2.1|~2.0",
                 "php": ">=5.3.9",
                 "symfony/console": "~2.3.10|^2.4.2|~3.0",
                 "symfony/var-dumper": "~2.7|~3.0"
             },
             "require-dev": {
                 "fabpot/php-cs-fixer": "~1.5",
-                "phpunit/phpunit": "~3.7|~4.0",
+                "phpunit/phpunit": "~3.7|~4.0|~5.0",
                 "squizlabs/php_codesniffer": "~2.0",
                 "symfony/finder": "~2.1|~3.0"
             },
@@ -1895,15 +2071,15 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.6.x-dev"
+                    "dev-develop": "0.7.x-dev"
                 }
             },
             "autoload": {
                 "files": [
                     "src/Psy/functions.php"
                 ],
-                "psr-0": {
-                    "Psy\\": "src/"
+                "psr-4": {
+                    "Psy\\": "src/Psy/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1925,7 +2101,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2015-07-16 15:26:57"
+            "time": "2015-11-08 22:24:35"
         },
         {
             "name": "sebastian/comparator",
@@ -2432,6 +2608,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cakemanager/cakephp-utils": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

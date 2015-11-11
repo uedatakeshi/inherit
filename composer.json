@@ -12,7 +12,10 @@
         "cakephp/plugin-installer": "*",
         "blueimp/jquery-file-upload": "*",
         "piwik/piwik-php-tracker": "*",
-        "davidyell/proffer": "~0.4"
+        "xety/cake3-upload": "1.*",
+        "cakemanager/cakephp-utils": "dev-master",
+        "davidyell/proffer": "~0.4",
+        "alaxos/cakephp3-blueimp-upload": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",
@@ -27,9 +30,9 @@
     "autoload": {
         "psr-4": {
             "App\\": "src",
-            "UploadHandler\\": "./vendor/blueimp/jquery-file-upload/server/php"
+            "MyUploadHandler\\": "./vendor/blueimp/jquery-file-upload/server/php"
         },
-        "classmap": ["./vendor/blueimp/jquery-file-upload/server/php/UploadHandler.php"]
+        "classmap": ["./vendor/blueimp/jquery-file-upload/server/php/MyUploadHandler.php"]
     },
     "autoload-dev": {
         "psr-4": {

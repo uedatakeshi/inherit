@@ -3,6 +3,7 @@
 /tmp/*
 /logs/*
 /node_modules/*
+/webroot/files/*
 
 .DS_Store
 .DS_Store?
