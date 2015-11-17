@@ -12,6 +12,7 @@
     </ul>
 </nav>
 <div class="estates form large-9 medium-8 columns content">
+        <input id="fileupload" type="file" name="files[]" data-url="/uploads/upload" multiple>
     <?= $this->Form->create($estate) ?>
     <fieldset>
         <legend><?= __('物件情報 新規登録') ?></legend>

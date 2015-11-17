@@ -19,7 +19,8 @@ class UploadsController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->loadComponent('RequestHandler');
+        //$this->loadComponent('RequestHandler');
+        $this->loadComponent('Upload');
     }
 
     /**
@@ -35,6 +36,16 @@ class UploadsController extends AppController
             'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'                     
            );
         $uploadHandler = new MyUploadHandler($options);
+    }
+
+    public function upload()
+    {
+        $this->autoRender = false;
+        $options = array(
+            'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",        
+            'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'                     
+           );
+        $this->Upload->send($options);
     }
 
 }
