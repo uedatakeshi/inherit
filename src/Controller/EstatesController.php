@@ -2,8 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Mailer\Email;
 use Cake\Log\Log;
+use Cake\Mailer\Email;
 
 /**
  * Estates Controller
@@ -12,6 +12,11 @@ use Cake\Log\Log;
  */
 class EstatesController extends AppController
 {
+    /**
+     * initialize method
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
@@ -114,7 +119,7 @@ class EstatesController extends AppController
         } else {
             $this->Flash->error(__('The estate could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
-
 }

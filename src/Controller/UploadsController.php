@@ -31,21 +31,25 @@ class UploadsController extends AppController
     public function index()
     {
         $this->autoRender = false;
-        $options = array(
-            'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",        
-            'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'                     
-           );
+        $options = [
+            'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",
+            'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'
+        ];
         $uploadHandler = new MyUploadHandler($options);
     }
 
+    /**
+     * upload method
+     *
+     * @return void
+     */
     public function upload()
     {
         $this->autoRender = false;
-        $options = array(
-            'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",        
-            'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'                     
-           );
+        $options = [
+            'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",
+            'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'
+        ];
         $this->Upload->send($options);
     }
-
 }
