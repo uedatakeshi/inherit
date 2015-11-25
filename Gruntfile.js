@@ -14,6 +14,15 @@ module.exports = function(grunt) {
                 colors: true
              }
         },
+        simplemocha: {
+            options: {
+                ui: 'bdd',
+                reporter: 'nyan'
+            },
+            all: { src: ['tests/TestCase/scripts/**/*.js'] }
+        },
+        watch: {
+        },
         phpcs: {
             application: {
                 src: ['src/**/*.php']
@@ -40,6 +49,13 @@ module.exports = function(grunt) {
             }
         },
         watch: {
+            simplemocha: {
+                files: ['src/Scripts/**/*.js', 'tests/TestCases/scripts/**/*.js'],
+                tasks: ['simplemocha'],
+                options: {
+                    spawn: false,
+                },
+            },
             phpcs: {
                 files: ['src/**/*.php'],
                 tasks: ['phpcs'],
@@ -77,6 +93,7 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-notify');
+    grunt.loadNpmTasks('grunt-simple-mocha');
     grunt.loadNpmTasks('grunt-phpunit');
     grunt.loadNpmTasks('grunt-phpcs');
     grunt.loadNpmTasks('grunt-browserify');
@@ -85,4 +102,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('js', ['browserify', 'uglify']);
+    grunt.registerTask('mocha', ['simplemocha']);
 };
