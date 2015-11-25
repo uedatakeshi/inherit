@@ -4,9 +4,9 @@ describe('POST /uploads', function(){
     it('respond with json', function(done){
         request('http://127.0.0.1:8765')
             .post('/uploads/upload')
-            .attach('files', 'tests/TestCase/Controller/_files/kojin_sou.sql')
+            .attach('files', 'tests/TestCase/Controller/_files/small.jpg')
             .set('Accept', 'application/json')
-            //.expect('Content-Type', /json/)
+            .expect('Content-Type', /json/)
             .expect(function(res) {
                 console.log(res.text);
                 var obj = JSON.parse(res.text);
@@ -15,7 +15,7 @@ describe('POST /uploads', function(){
             })
             .expect(200, {
                 type: 'image/jpeg',
-                name: 'kojin_sou.sql'
+                name: 'small.jpg'
             }, done);
     });
 });

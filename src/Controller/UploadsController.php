@@ -50,6 +50,9 @@ class UploadsController extends AppController
             'upload_dir' => WWW_ROOT . 'files/' . date("Ymd") . "/",
             'accept_file_types' => '/\.(pdf|gif|jpe?g|png)$/i'
         ];
-        $this->Upload->send($options);
+
+        $this->response->charset('UTF-8');
+        $this->response->type('json');
+        echo json_encode($this->Upload->send($options));
     }
 }

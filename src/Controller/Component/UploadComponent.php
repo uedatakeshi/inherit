@@ -176,7 +176,7 @@ class UploadComponent extends Component
         switch ($this->request->env('REQUEST_METHOD')) {
             case 'GET':
             case 'POST':
-                $this->post($this->options['print_response']);
+                return $this->post($this->options['print_response']);
                 break;
             case 'DELETE':
                 $this->delete($this->options['print_response']);
@@ -237,7 +237,8 @@ class UploadComponent extends Component
             }
         }
         $response = array($this->options['param_name'] => $files);
-        return $this->generateResponse($response, $printResponse);
+        //return $this->generateResponse($response, $printResponse);
+        return $response;
     }
 
     public function generateResponse($content, $printResponse = true)
