@@ -159,7 +159,6 @@ class UploadComponent extends Component
                     'max_height' => 80
                 ]
             ],
-            'print_response' => true
         ];
     }
 
@@ -176,20 +175,19 @@ class UploadComponent extends Component
         switch ($this->request->env('REQUEST_METHOD')) {
             case 'GET':
             case 'POST':
-                return $this->post($this->options['print_response']);
-                break;
+                return $this->post();
             case 'DELETE':
-                $this->delete($this->options['print_response']);
+                $this->delete();
                 break;
             default:
                 throw new MethodNotAllowedException();
         }
     }
 
-    public function post($printResponse = true)
+    public function post()
     {
         if ($this->request->query('_method') === 'DELETE') {
-            return $this->delete($printResponse);
+            return $this->delete();
         }
         $upload = $this->request->data[$this->options['param_name']];
         // Parse the Content-Disposition header, if available:
@@ -236,76 +234,12 @@ class UploadComponent extends Component
                 );
             }
         }
-        $response = array($this->options['param_name'] => $files);
-        //return $this->generateResponse($response, $printResponse);
+        $response = [$this->options['param_name'] => $files];
+
         return $response;
     }
 
-    public function generateResponse($content, $printResponse = true)
-    {
-        //$this->response = $content;
-        if ($printResponse) {
-            $json = json_encode($content);
-            $redirect = stripslashes($this->request->data('redirect'));
-            if ($redirect && preg_match($this->options['redirect_allow_target'], $redirect)) {
-                $this->header('Location: ' . sprintf($redirect, rawurlencode($json)));
-                return;
-            }
-            $this->head();
-            if ($this->request->env('HTTP_CONTENT_RANGE')) {
-                $files = isset($content[$this->options['param_name']]) ?
-                    $content[$this->options['param_name']] : null;
-                if ($files && is_array($files) && is_object($files[0]) && $files[0]->size) {
-                    $this->header('Range: 0-' . (
-                        $this->fixIntegerOverflow((int)$files[0]->size) - 1
-                    ));
-                }
-            }
-            $this->body($json);
-        }
-        return $content;
-    }
-
-    public function head() {
-        $this->header('Pragma: no-cache');
-        $this->header('Cache-Control: no-store, no-cache, must-revalidate');
-        $this->header('Content-Disposition: inline; filename="files.json"');
-        // Prevent Internet Explorer from MIME-sniffing the content-type:
-        $this->header('X-Content-Type-Options: nosniff');
-        if ($this->options['access_control_allow_origin']) {
-            $this->sendAccessControlHeaders();
-        }
-        $this->sendContentTypeHeader();
-    }
-
-    protected function sendAccessControlHeaders() {
-        $this->header('Access-Control-Allow-Origin: ' . $this->options['access_control_allow_origin']);
-        $this->header('Access-Control-Allow-Credentials: ' .
-            ($this->options['access_control_allow_credentials'] ? 'true' : 'false'));
-        $this->header('Access-Control-Allow-Methods: ' .
-            implode(', ', $this->options['access_control_allow_methods']));
-        $this->header('Access-Control-Allow-Headers: ' .
-            implode(', ', $this->options['access_control_allow_headers']));
-    }
-
-    protected function sendContentTypeHeader() {
-        $this->header('Vary: Accept');
-        if (strpos($this->request->env('HTTP_ACCEPT'), 'application/json') !== false) {
-            $this->header('Content-type: application/json');
-        } else {
-            $this->header('Content-type: text/plain');
-        }
-    }
-
-    protected function header($str) {
-        header($str);
-    }
-
-    protected function body($str) {
-        echo $str;
-    }
-
-    public function delete($printResponse = true)
+    public function delete()
     {
         echo "delete";
     }
@@ -375,7 +309,8 @@ class UploadComponent extends Component
         return $file;
     }
 
-    protected function setAdditionalFileProperties($file) {
+    protected function setAdditionalFileProperties($file)
+    {
         $file->deleteUrl = $this->options['script_url'] .
             $this->getQuerySeparator($this->options['script_url']) .
             $this->getSingularParamName() .
@@ -392,8 +327,8 @@ class UploadComponent extends Component
 
     protected function handleImageFile($filePath, $file)
     {
-        $failedVersions = array();
-        foreach($this->options['image_versions'] as $version => $options) {
+        $failedVersions = [];
+        foreach ($this->options['image_versions'] as $version => $options) {
             if ($this->createScaledImage($file->name, $version, $options)) {
                 if (!empty($version)) {
                     $file->{$version . 'Url'} = $this->getDownloadUrl(
@@ -426,7 +361,8 @@ class UploadComponent extends Component
         return $this->gdCreateScaledImage($fileName, $version, $options);
     }
 
-    protected function gdCreateScaledImage($fileName, $version, $options) {
+    protected function gdCreateScaledImage($fileName, $version, $options)
+    {
         if (!function_exists('imagecreatetruecolor')) {
             error_log('Function not found: imagecreatetruecolor');
             return false;
@@ -462,15 +398,9 @@ class UploadComponent extends Component
             !empty($options['no_cache'])
         );
         $imageOriented = false;
-        if (!empty($options['auto_orient']) && $this->gdOrientImage(
-                $filePath,
-                $srcImg
-            )) {
+        if (!empty($options['auto_orient']) && $this->gdOrientImage($filePath, $srcImg)) {
             $imageOriented = true;
-            $srcImg = $this->gd_get_image_object(
-                $filePath,
-                $srcFunc
-            );
+            $srcImg = $this->gd_get_image_object($filePath, $srcFunc);
         }
         $maxWidth = $imgWidth = imagesx($srcImg);
         $maxHeight = $imgHeight = imagesy($srcImg);
@@ -514,7 +444,7 @@ class UploadComponent extends Component
         // Handle transparency in GIF and PNG images:
         switch ($type) {
             case 'gif':
-            case 'png':
+            case 'png':// this is gif
                 imagecolortransparent($newImg, imagecolorallocate($newImg, 0, 0, 0));
             case 'png':
                 imagealphablending($newImg, false);
@@ -536,7 +466,9 @@ class UploadComponent extends Component
         $this->gdSetImageObject($filePath, $newImg);
         return $success;
     }
-    protected function destroyImageObject($filePath) {
+    
+    protected function destroyImageObject($filePath)
+    {
         if ($this->options['image_library'] && extension_loaded('imagick')) {
             return $this->imagickDestroyImageObject($filePath);
         }
@@ -544,11 +476,12 @@ class UploadComponent extends Component
 
     protected function imagickDestroyImageObject($filePath)
     {
-        $image = (isset($this->image_objects[$filePath])) ? $this->image_objects[$filePath] : null ;
+        $image = (isset($this->image_objects[$filePath])) ? $this->image_objects[$filePath] : null;
         return $image && $image->destroy();
     }
 
-    protected function getScaledImageFilePaths($fileName, $version) {
+    protected function getScaledImageFilePaths($fileName, $version)
+    {
         $filePath = $this->getUploadPath($fileName);
         if (!empty($version)) {
             $versionDir = $this->getUploadPath(null, $version);

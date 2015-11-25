@@ -7,16 +7,19 @@ describe('POST /uploads', function(){
             .attach('files', 'tests/TestCase/Controller/_files/small.jpg')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
-            .expect(function(res) {
-                console.log(res.text);
-                var obj = JSON.parse(res.text);
-                res.body.type = obj.files[0].type;
-                res.body.name = obj.files[0].name;
-            })
-            .expect(200, {
-                type: 'image/jpeg',
-                name: 'small.jpg'
-            }, done);
+            .expect(200, 
+                    {files: [
+                        {
+                            name: 'small.jpg',
+                            size: 79551,
+                            type: 'image/jpeg',
+                            url: 'http://127.0.0.1:8765/files/small.jpg',
+                            thumbnailUrl: 'http://127.0.0.1:8765/files/thumbnail/small.jpg',
+                            deleteUrl: 'http://127.0.0.1:8765/index.php?file=small.jpg',
+                            deleteType: 'DELETE'
+                        }
+                    ]}        
+            , done);
     });
 });
 
