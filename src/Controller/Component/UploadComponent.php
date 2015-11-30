@@ -6,6 +6,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Exception\MethodNotAllowedException;
 use Cake\Utility\Text;
+use Cake\Routing\Router;
 
 class UploadComponent extends Component
 {
@@ -45,9 +46,9 @@ class UploadComponent extends Component
     public function initialize(array $config)
     {
         $this->options = [
-            'script_url' => $this->getFullUrl() . '/' . basename($this->request->env('SCRIPT_NAME')),
-            'upload_dir' => dirname($this->request->env('SCRIPT_FILENAME')) . '/files/',
-            'upload_url' => $this->getFullUrl() . '/files/',
+            'script_url' => Router::url(NULL, true),
+            'upload_dir' => WWW_ROOT . 'files/',
+            'upload_url' => Router::url('/', true) . 'files/',
             'user_dirs' => false,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
@@ -242,20 +243,6 @@ class UploadComponent extends Component
     public function delete()
     {
         echo "delete";
-    }
-
-    protected function getFullUrl()
-    {
-        $https = !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'on') === 0 ||
-            !empty($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-                strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
-        return
-            ($https ? 'https://' : 'http://') .
-            (!empty($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'] . '@' : '') .
-            (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ($_SERVER['SERVER_NAME'] .
-            ($https && $_SERVER['SERVER_PORT'] === 443 ||
-            $_SERVER['SERVER_PORT'] === 80 ? '' : ':' . $_SERVER['SERVER_PORT']))) .
-            substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/'));
     }
 
     protected function handleFileUpload($uploadedFile, $name, $size, $type, $error, $index = null, $contentRange = null)
