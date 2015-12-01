@@ -5,8 +5,8 @@ use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Exception\MethodNotAllowedException;
-use Cake\Utility\Text;
 use Cake\Routing\Router;
+use Cake\Utility\Text;
 
 class UploadComponent extends Component
 {
@@ -46,7 +46,7 @@ class UploadComponent extends Component
     public function initialize(array $config)
     {
         $this->options = [
-            'script_url' => Router::url(NULL, true),
+            'script_url' => Router::url(null, true),
             'upload_dir' => WWW_ROOT . 'files/',
             'upload_url' => Router::url('/', true) . 'files/',
             'user_dirs' => false,
@@ -54,7 +54,7 @@ class UploadComponent extends Component
             'param_name' => 'files',
             // Set the following option to 'POST', if your server does not support
             // DELETE requests. This is a parameter sent to the client:
-            'delete_type' => 'DELETE',
+            'delete_type' => 'POST',
             'access_control_allow_origin' => '*',
             'access_control_allow_credentials' => false,
             'access_control_allow_methods' => [
@@ -248,7 +248,9 @@ class UploadComponent extends Component
     protected function handleFileUpload($uploadedFile, $name, $size, $type, $error, $index = null, $contentRange = null)
     {
         $file = new \stdClass();
-        $file->name = $this->getFileName($uploadedFile, $name, $size, $type, $error, $index, $contentRange);
+        $file->nameOrg = $name;
+        $file->name = $this->getFileNameMd5($uploadedFile, $name, $size, $type, $error, $index, $contentRange);
+
         $file->size = $this->fixIntegerOverflow((int)$size);
         $file->type = $type;
         if ($this->validate($uploadedFile, $file, $error, $index)) {
@@ -294,6 +296,100 @@ class UploadComponent extends Component
             $this->setAdditionalFileProperties($file);
         }
         return $file;
+    }
+
+    protected function getUniqueFilename($filePath, $name, $size, $type, $error, $index, $contentRange)
+    {
+        while (is_dir($this->getUploadPath($name))) {
+            $name = $this->upcountName($name);
+        }
+        // Keep an existing filename if this is part of a chunked upload:
+        $uploadedBytes = $this->fixIntegerOverflow((int)$contentRange[1]);
+        while (is_file($this->getUploadPath($name))) {
+            if ($uploadedBytes === $this->getFileSize($this->getUploadPath($name))) {
+                break;
+            }
+            $name = $this->upcountName($name);
+        }
+        return $name;
+    }
+
+    protected function trimFileName($filePath, $name, $size, $type, $error, $index, $contentRange)
+    {
+        // Remove path information and dots around the filename, to prevent uploading
+        // into different directories or replacing hidden system files.
+        // Also remove control characters and spaces (\x00..\x20) around the filename:
+        $name = trim(basename(stripslashes($name)), ".\x00..\x20");
+        // Use a timestamp for empty filenames:
+        if (!$name) {
+            $name = str_replace('.', '-', microtime(true));
+        }
+        return $name;
+    }
+
+    protected function getFileName($filePath, $name, $size, $type, $error, $index, $contentRange)
+    {
+        $name = $this->trimFileName($filePath, $name, $size, $type, $error, $index, $contentRange);
+        return $this->getUniqueFilename(
+            $filePath,
+            $this->fixFileExtension($filePath, $name, $size, $type, $error, $index, $contentRange),
+            $size,
+            $type,
+            $error,
+            $index,
+            $contentRange
+        );
+    }
+
+    protected function getFileNameMd5($filePath, $name, $size, $type, $error, $index, $contentRange)
+    {
+        // add pdf extension
+        $ext = '';
+        if (preg_match('/\.pdf$/i', $name)) {
+            $ext = ".pdf";
+        }
+        $name = md5($filePath) . $ext;
+        return $this->getUniqueFilename(
+            $filePath,
+            $this->fixFileExtension($filePath, $name, $size, $type, $error, $index, $contentRange),
+            $size,
+            $type,
+            $error,
+            $index,
+            $contentRange
+        );
+    }
+
+    protected function fixFileExtension($filePath, $name, $size, $type, $error, $index, $contentRange)
+    {
+        // Add missing file extension for known image types:
+        if (strpos($name, '.') === false && preg_match('/^image\/(gif|jpe?g|png)/', $type, $matches)) {
+            $name .= '.' . $matches[1];
+        }
+        if ($this->options['correct_image_extensions'] && function_exists('exif_imagetype')) {
+            switch (@exif_imagetype($filePath)) {
+                case IMAGETYPE_JPEG:
+                    $extensions = ['jpg', 'jpeg'];
+                    break;
+                case IMAGETYPE_PNG:
+                    $extensions = ['png'];
+                    break;
+                case IMAGETYPE_GIF:
+                    $extensions = ['gif'];
+                    break;
+            }
+            // Adjust incorrect image file extensions:
+            if (!empty($extensions)) {
+                $parts = explode('.', $name);
+                $extIndex = count($parts) - 1;
+                $ext = strtolower(@$parts[$extIndex]);
+                if (!in_array($ext, $extensions)) {
+                    $parts[$extIndex] = $extensions[0];
+                    $name = implode('.', $parts);
+                }
+            }
+        }
+        return $name;
     }
 
     protected function setAdditionalFileProperties($file)
@@ -431,8 +527,8 @@ class UploadComponent extends Component
         // Handle transparency in GIF and PNG images:
         switch ($type) {
             case 'gif':
-            case 'png':// this is gif
-                imagecolortransparent($newImg, imagecolorallocate($newImg, 0, 0, 0));
+            case 'png':
+                imagecolortransparent($newImg, imagecolorallocate($newImg, 0, 0, 0));// this is gif
             case 'png':
                 imagealphablending($newImg, false);
                 imagesavealpha($newImg, true);
@@ -479,10 +575,11 @@ class UploadComponent extends Component
         } else {
             $newFilePath = $filePath;
         }
-        return array($filePath, $newFilePath);
+        return [$filePath, $newFilePath];
     }
 
-    protected function gdGetImageObject($filePath, $func, $noCache = false) {
+    protected function gdGetImageObject($filePath, $func, $noCache = false)
+    {
         if (empty($this->imageObjects[$filePath]) || $noCache) {
             $this->gdDestroyImageObject($filePath);
             $this->imageObjects[$filePath] = $func($filePath);
@@ -490,8 +587,9 @@ class UploadComponent extends Component
         return $this->imageObjects[$filePath];
     }
 
-    protected function gdDestroyImageObject($filePath) {
-        $image = (isset($this->imageObjects[$filePath])) ? $this->imageObjects[$filePath] : null ;
+    protected function gdDestroyImageObject($filePath)
+    {
+        $image = (isset($this->imageObjects[$filePath])) ? $this->imageObjects[$filePath] : null;
         return $image && imagedestroy($image);
     }
 
@@ -575,7 +673,8 @@ class UploadComponent extends Component
         return $success && $image->writeImage($newFilePath);
     }
 
-    protected function imagickOrientImage($image) {
+    protected function imagickOrientImage($image)
+    {
         $orientation = $image->getImageOrientation();
         $background = new \ImagickPixel('none');
         switch ($orientation) {
@@ -609,7 +708,8 @@ class UploadComponent extends Component
         return true;
     }
 
-    protected function imagickGetImageObject($filePath, $noCache = false) {
+    protected function imagickGetImageObject($filePath, $noCache = false)
+    {
         if (empty($this->imageObjects[$filePath]) || $noCache) {
             $this->imagickDestroyImageObject($filePath);
             $image = new \Imagick();
@@ -624,12 +724,14 @@ class UploadComponent extends Component
         return $this->imageObjects[$filePath];
     }
 
-    protected function imagickSetImageObject($filePath, $image) {
+    protected function imagickSetImageObject($filePath, $image)
+    {
         $this->imagickDestroyImageObject($filePath);
         $this->imageObjects[$filePath] = $image;
     }
 
-    protected function gdOrientImage($filePath, $srcImg) {
+    protected function gdOrientImage($filePath, $srcImg)
+    {
         if (!function_exists('exif_read_data')) {
             return false;
         }
@@ -686,12 +788,14 @@ class UploadComponent extends Component
         return true;
     }
     
-    protected function gdSetImageObject($filePath, $image) {
+    protected function gdSetImageObject($filePath, $image)
+    {
         $this->gdDestroyImageObject($filePath);
         $this->imageObjects[$filePath] = $image;
     }
 
-    protected function imagemagickCreateScaledImage($fileName, $version, $options) {
+    protected function imagemagickCreateScaledImage($fileName, $version, $options)
+    {
         list($filePath, $newFilePath) = $this->getScaledImageFilePaths($fileName, $version);
         $resize = @$options['max_width'] . (empty($options['max_height']) ? '' : 'X' . $options['max_height']);
         if (!$resize && empty($options['auto_orient'])) {
@@ -785,80 +889,6 @@ class UploadComponent extends Component
         return $size;
     }
 
-    protected function getUniqueFilename($filePath, $name, $size, $type, $error, $index, $contentRange)
-    {
-        while (is_dir($this->getUploadPath($name))) {
-            $name = $this->upcountName($name);
-        }
-        // Keep an existing filename if this is part of a chunked upload:
-        $uploadedBytes = $this->fixIntegerOverflow((int)$contentRange[1]);
-        while (is_file($this->getUploadPath($name))) {
-            if ($uploadedBytes === $this->getFileSize($this->getUploadPath($name))) {
-                break;
-            }
-            $name = $this->upcountName($name);
-        }
-        return $name;
-    }
-
-    protected function trimFileName($filePath, $name, $size, $type, $error, $index, $contentRange)
-    {
-        // Remove path information and dots around the filename, to prevent uploading
-        // into different directories or replacing hidden system files.
-        // Also remove control characters and spaces (\x00..\x20) around the filename:
-        $name = trim(basename(stripslashes($name)), ".\x00..\x20");
-        // Use a timestamp for empty filenames:
-        if (!$name) {
-            $name = str_replace('.', '-', microtime(true));
-        }
-        return $name;
-    }
-
-    protected function getFileName($filePath, $name, $size, $type, $error, $index, $contentRange)
-    {
-        $name = $this->trimFileName($filePath, $name, $size, $type, $error, $index, $contentRange);
-        return $this->getUniqueFilename(
-            $filePath,
-            $this->fixFileExtension($filePath, $name, $size, $type, $error, $index, $contentRange),
-            $size,
-            $type,
-            $error,
-            $index,
-            $contentRange
-        );
-    }
-
-    protected function fixFileExtension($filePath, $name, $size, $type, $error, $index, $contentRange)
-    {
-        // Add missing file extension for known image types:
-        if (strpos($name, '.') === false && preg_match('/^image\/(gif|jpe?g|png)/', $type, $matches)) {
-            $name .= '.' . $matches[1];
-        }
-        if ($this->options['correct_image_extensions'] && function_exists('exif_imagetype')) {
-            switch (@exif_imagetype($filePath)) {
-                case IMAGETYPE_JPEG:
-                    $extensions = ['jpg', 'jpeg'];
-                    break;
-                case IMAGETYPE_PNG:
-                    $extensions = ['png'];
-                    break;
-                case IMAGETYPE_GIF:
-                    $extensions = ['gif'];
-                    break;
-            }
-            // Adjust incorrect image file extensions:
-            if (!empty($extensions)) {
-                $parts = explode('.', $name);
-                $extIndex = count($parts) - 1;
-                $ext = strtolower(@$parts[$extIndex]);
-                if (!in_array($ext, $extensions)) {
-                    $parts[$extIndex] = $extensions[0];
-                    $name = implode('.', $parts);
-                }
-            }
-        }
-        return $name;
-    }
 
     protected function validate($uploadedFile, $file, $error, $index)
     {
@@ -912,16 +942,15 @@ class UploadComponent extends Component
 
             // If we are auto rotating the image by default, do the checks on
             // the correct orientation
-            if (
-                @$this->options['image_versions']['']['auto_orient'] &&
+            if (@$this->options['image_versions']['']['auto_orient'] &&
                 function_exists('exif_read_data') &&
                 ($exif = @exif_read_data($uploadedFile)) &&
-                (((int) @$exif['Orientation']) >= 5 )
+                (((int)@$exif['Orientation']) >= 5)
             ) {
-              $tmp = $imgWidth;
-              $imgWidth = $imgHeight;
-              $imgHeight = $tmp;
-              unset($tmp);
+                $tmp = $imgWidth;
+                $imgWidth = $imgHeight;
+                $imgHeight = $tmp;
+                unset($tmp);
             }
 
         }
@@ -952,15 +981,15 @@ class UploadComponent extends Component
             $this->error_messages[$error] : $error;
     }
 
-    function getConfigBytes($val)
+    protected function getConfigBytes($val)
     {
         $val = trim($val);
-        $last = strtolower($val[strlen($val)-1]);
+        $last = strtolower($val[strlen($val) - 1]);
         switch ($last) {
             case 'g':
-                $val *= 1024;
+                $val *= 1024;//
             case 'm':
-                $val *= 1024;
+                $val *= 1024;//
             case 'k':
                 $val *= 1024;
         }
@@ -983,10 +1012,10 @@ class UploadComponent extends Component
     {
         $uploadDir = $this->getUploadPath();
         if (!is_dir($uploadDir)) {
-            return array();
+            return [];
         }
         return array_values(array_filter(array_map(
-            array($this, $iterationMethod),
+            [$this, $iterationMethod],
             scandir($uploadDir)
         )));
     }
@@ -1003,7 +1032,7 @@ class UploadComponent extends Component
                 $image = new \Imagick();
                 try {
                     if (@$image->pingImage($filePath)) {
-                        $dimensions = array($image->getImageWidth(), $image->getImageHeight());
+                        $dimensions = [$image->getImageWidth(), $image->getImageHeight()];
                         $image->destroy();
                         return $dimensions;
                     }
@@ -1032,7 +1061,8 @@ class UploadComponent extends Component
         return @getimagesize($filePath);
     }
 
-    protected function handleFormData($file, $index) {
+    protected function handleFormData($file, $index)
+    {
         // Handle form data, e.g. $_POST['description'][$index]
     }
 
@@ -1083,5 +1113,4 @@ class UploadComponent extends Component
         $imageInfo = $this->getImageSize($filePath);
         return $imageInfo && $imageInfo[0] && $imageInfo[1];
     }
-
 }
